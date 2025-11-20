@@ -1,0 +1,33 @@
+name: CSV Migration Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      csv_file:
+        description: 'Nome do CSV na pasta data/'
+        required: true
+
+jobs:
+  encode-and-migrate:
+    runs-on: ubuntu-latest
+    env:
+      CSV_ENCODED: ""
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Encode CSV and set as job env
+        run: |
+          FILE_PATH="data/${{ github.event.inputs.csv_file }}"
+          if [ ! -f "$FILE_PATH" ]; then
+            echo "CSV file not found: $FILE_PATH"
+            exit 1
+          fi
+          ENCODED=$(base64 "$FILE_PATH" | tr -d '\n')
+          echo "CSV_ENCODED=$ENCODED" >> $GITHUB_ENV
+
+      - name: Decode CSV from job env
+        id: decode_csv
+        run: |
+          echo "$CSV_ENCODED" | base64 -d > input.csv
+
