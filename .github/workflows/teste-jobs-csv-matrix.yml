@@ -28,13 +28,10 @@ jobs:
           - "${{ github.event.inputs.csv3 }}"
           - "${{ github.event.inputs.csv4 }}"
           - "${{ github.event.inputs.csv5 }}"
-
+          
+    if: matrix.csv_file != ''
+    
     steps:
-      - name: Skip if no CSV provided
-        if: matrix.csv_file == ''
-        run: |
-          echo "No CSV provided for this job. Skipping."
-          exit 0
 
       - name: Found CSV
         run: |
