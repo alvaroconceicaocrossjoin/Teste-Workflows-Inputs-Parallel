@@ -1,0 +1,38 @@
+on:
+  workflow_dispatch:
+    inputs:
+      jobs_to_run:
+        description: "Comma-separated jobs to run (ex: job1,job2,job4)"
+        required: true
+        default: "job1,job2,job3"
+jobs:
+
+  job1:
+    if: contains(github.event.inputs.jobs_to_run, 'job1')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running JOB 1"
+
+  job2:
+    if: contains(github.event.inputs.jobs_to_run, 'job2')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running JOB 2"
+
+  job3:
+    if: contains(github.event.inputs.jobs_to_run, 'job3')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running JOB 3"
+
+  job4:
+    if: contains(github.event.inputs.jobs_to_run, 'job4')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running JOB 4"
+
+  job5:
+    if: contains(github.event.inputs.jobs_to_run, 'job5')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running JOB 5"
