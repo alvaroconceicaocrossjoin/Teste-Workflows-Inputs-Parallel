@@ -4,18 +4,23 @@ on:
       csv1:
         description: "CSV file #1"
         required: false
+        default: 'null'
       csv2:
         description: "CSV file #2"
         required: false
+        default: 'null'
       csv3:
         description: "CSV file #3"
         required: false
+        default: 'null'
       csv4:
         description: "CSV file #4"
         required: false
+        default: 'null'
       csv5:
         description: "CSV file #5"
         required: false
+        default: 'null'
 jobs:
   migrate:
     runs-on: ubuntu-latest
@@ -29,7 +34,7 @@ jobs:
           - "${{ github.event.inputs.csv4 }}"
           - "${{ github.event.inputs.csv5 }}"
           
-    if: matrix.csv_file != ''
+    if: ${{ matrix.csv_file == 'null' }}
     
     steps:
 
