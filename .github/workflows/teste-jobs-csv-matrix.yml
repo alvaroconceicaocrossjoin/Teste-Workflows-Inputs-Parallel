@@ -1,0 +1,41 @@
+on:
+  workflow_dispatch:
+    inputs:
+      csv1:
+        description: "CSV file #1"
+        required: false
+      csv2:
+        description: "CSV file #2"
+        required: false
+      csv3:
+        description: "CSV file #3"
+        required: false
+      csv4:
+        description: "CSV file #4"
+        required: false
+      csv5:
+        description: "CSV file #5"
+        required: false
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        csv_file:
+          - "${{ github.event.inputs.csv1 }}"
+          - "${{ github.event.inputs.csv2 }}"
+          - "${{ github.event.inputs.csv3 }}"
+          - "${{ github.event.inputs.csv4 }}"
+          - "${{ github.event.inputs.csv5 }}"
+
+    steps:
+      - name: Skip if no CSV provided
+        if: matrix.csv_file == ''
+        run: |
+          echo "No CSV provided for this job. Skipping."
+          exit 0
+
+      - name: Found CSV
+        run: |
+          echo Found "${{ github.event.inputs.csv1 }}"
