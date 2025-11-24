@@ -34,8 +34,9 @@ jobs:
       - name: Skip if CSV is empty
         if: ${{ matrix.csv_file == '' }}
         run: |
-          echo "No CSV provided for this job. Skipping."
+          echo "No CSV provided for this job. Skipping next steps."
           exit 0
       - name: Found CSV
+        if: ${{ matrix.csv_file == '' }}
         run: |
           echo Found "${{ github.event.inputs.csv1 }}"
