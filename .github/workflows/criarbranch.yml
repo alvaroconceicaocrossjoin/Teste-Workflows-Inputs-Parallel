@@ -1,0 +1,39 @@
+name: Create develop branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # important, we need full history
+
+      - name: Check if develop branch exists
+        id: check
+        run: |
+          if git show-ref --quiet refs/heads/develop; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create develop branch from main
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          git checkout main
+          git pull origin main
+          git checkout -b develop
+          git push origin develop
+
+      - name: Report
+        run: |
+          if [ "${{ steps.check.outputs.exists }}" = "true" ]; then
+            echo "Branch 'develop' already exists. Nothing to do."
+          else
+            echo "Branch 'develop' created from 'main'."
+          fi
